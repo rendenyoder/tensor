@@ -41,13 +41,17 @@ class FashionMnist:
             model = tf.keras.models.load_model(path)
         else:
             model = keras.Sequential([
+                keras.layers.Conv2D(filters=64, kernel_size=(3, 3), activation='relu',
+                                    input_shape=(28, 28, 1)),
+                keras.layers.MaxPool2D(2, 2),
                 keras.layers.Flatten(input_shape=(28, 28)),
                 keras.layers.Dense(1024, activation=tf.nn.relu),
                 keras.layers.Dense(10, activation=tf.nn.softmax)
             ])
 
+            self.train_images = self.train_images.reshape(60000, 28, 28, 1)
             model.compile(optimizer='adam', loss='sparse_categorical_crossentropy')
-            model.fit(self.train_images, self.train_labels, epochs=100)
+            model.fit(self.train_images, self.train_labels, epochs=10)
 
             model.save("models/fashion_mnist")
 
@@ -58,7 +62,7 @@ class FashionMnist:
         plt.imshow(self.test_images[image_index])
         plt.show()
 
-        test_image = self.test_images[image_index].reshape(1, 28, 28)
+        test_image = self.test_images[image_index].reshape(1, 28, 28, 1)
         classifications = self.model.predict(test_image)
         classification = classifications[0]
         max_val = np.max(classification)
