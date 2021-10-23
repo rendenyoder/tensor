@@ -1,0 +1,3 @@
+[submodule "m1-tensorflow-config"]
+	path = m1-tensorflow-config
+	url = git@github.com:rendenyoder/m1-tensorflow-config.git
